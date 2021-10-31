@@ -72,6 +72,21 @@ async function run() {
             const result = await placeCollection.insertOne(offer);
             res.send(result);
         });
+
+        //UPDATE or PUT API for status
+        app.put('/status/:id', async(req, res) => {
+            const id = req.params.id;
+            const updateInfo = req.body;
+            const query = {_id: ObjectId(id)}
+            const options = { upsert: true };
+            const update = {
+                $set: {
+                    status: updateInfo.status
+                }
+            }
+            const result = await bookedCollection.updateOne(query, update, options);
+            res.send(result)
+        })
     }
     finally{
         // await client.close();
